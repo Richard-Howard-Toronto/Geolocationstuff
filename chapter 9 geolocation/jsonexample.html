@@ -7,12 +7,17 @@
   </head>
 
   <body>
+    <ul>Your location:</ul>
     <p id="listofStates">List of States</p>
     <button>Toggle between hide() and show()</button>
 
-<!-- // jquery -->
+<!-- // javacript and jquery -->
 
   <script>
+
+
+// end of geolocation
+
     $(document).ready(function(){
       $("button").click(function(){
         $("p#listofStates").toggle();
@@ -291,7 +296,7 @@
         newContent += msglon + value["longitude"] + space;
         count++;
       }
-      
+
       $(function(){
         $('div').before('<p class="geolist">State and Location </p>')
       });
@@ -304,6 +309,50 @@
       } else {
         console.log(typeof jQuery)
       }
+
+// geolocation
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+
+        msglat = position.coords.latitude
+        msglon = position.coords.longitude
+
+
+        $('ul').append('<li id="1"></li>')
+        $('li#1').append(msglat);
+        $('ul').append('<li id="2"></li>')
+        $('li#2').append(msglon);
+
+        var msglat2 = 45;
+        var msglon2 = -60;
+  });
+
+
+    function distance(msglat, msglon, msglat2, msglon2, unit) {
+        if ((msglat == msglat2) && (msglon == msglon2)) {
+          return 0;
+        }
+      else {
+        var radmsglat = Math.PI * msglat/180;
+        var radmsglat2 = Math.PI * msglat2/180;
+        var theta = msglon-msglon2;
+        var radtheta = Math.PI * theta/180;
+        var dist = Math.sin(radmsglat) * Math.sin(radmsglat2) + Math.cos(radmsglat) * Math.cos(radmsglat2) * Math.cos(radtheta);
+        if (dist > 1) {
+          dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180/Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit=="K") { dist = dist * 1.609344 }
+        if (unit=="N") { dist = dist * 0.8684 }
+        $('ul').append('<li id="3"></li>');
+        $('li#3').text('distance from here: ');
+        $('li#3').append(dist);
+      }
+    }
+
+  distance(44,-63,61,-142,"K")
 
   </script>
 
